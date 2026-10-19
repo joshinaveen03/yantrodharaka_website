@@ -1,11 +1,10 @@
 services:
-  # ── 1. Backend Web Service (FastAPI) ─────────────────────────────
+  # ── Unified Full-Stack Web Service (FastAPI + React) ────────────────────────
   - type: web
-    name: yantrodharaka-backend
+    name: yantrodharaka
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: cd frontend && npm install && npm run build && cd ../backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
@@ -17,25 +16,10 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "60"
       - key: FRONTEND_ORIGIN
-        sync: false
+        value: "*"
       - key: ADMIN_EMAIL
         value: admin@yantrodharaka.in
       - key: ADMIN_PASSWORD
         sync: false
       - key: STORAGE_BACKEND
         value: local
-
-  # ── 2. Frontend Static Site (React / Vite) ───────────────────────
-  - type: web
-    name: yantrodharaka-frontend
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_BASE_URL
-        sync: false

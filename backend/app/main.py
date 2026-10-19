@@ -20,9 +20,13 @@ app = FastAPI(
 )
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
+cors_origins = [settings.FRONTEND_ORIGIN, "http://localhost:5173", "http://127.0.0.1:5173"]
+if settings.FRONTEND_ORIGIN == "*":
+    cors_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_ORIGIN],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -83,3 +87,49 @@ def admin_stats(
         "payments": db.query(Payment).count(),
         "total_revenue": total_rev,
     }
+
+
+# ── Frontend SPA Serving (Unified Service) ────────────────────────────────────
+# Check both potential locations (running from backend/ or project root)
+possible_dist_paths = [
+    Path(__file__).resolve().parent.parent.parent / "frontend" / "dist",
+    Path("frontend/dist").resolve(),
+    Path("../frontend/dist").resolve(),
+]
+FRONTEND_DIST = next((p for p in possible_dist_paths if p.is_dir()), None)
+
+if FRONTEND_DIST:
+    assets_dir = FRONTEND_DIST / "assets"
+    if assets_dir.is_dir():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="frontend-assets")
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_spa(full_path: str):
+    # Never intercept backend API routes
+    if full_path.startswith("api/") or full_path == "api":
+        return JSONResponse({"detail": "Not Found"}, status_code=404)
+
+    if not FRONTEND_DIST or not FRONTEND_DIST.is_dir():
+        return JSONResponse(
+            {"detail": "Frontend not built yet. Run 'npm run build' inside frontend/"},
+            status_code=404,
+        )
+
+    # 1. Direct static file match in dist (e.g. favicon.png, logo.png, robots.txt)
+    target_file = (FRONTEND_DIST / full_path).resolve()
+    try:
+        # Prevent directory traversal attacks
+        target_file.relative_to(FRONTEND_DIST.resolve())
+        if target_file.is_file():
+            return FileResponse(target_file)
+    except ValueError:
+        return JSONResponse({"detail": "Forbidden"}, status_code=403)
+
+    # 2. SPA client-side routes (e.g. /about, /courses, /admin/login) -> return index.html
+    index_file = FRONTEND_DIST / "index.html"
+    if index_file.is_file():
+        return FileResponse(index_file)
+
+    return JSONResponse({"detail": "Frontend index.html not found"}, status_code=404)
+
