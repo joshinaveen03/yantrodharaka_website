@@ -1,0 +1,158 @@
+/* Shared styles for public pages */
+
+.page-wrapper { min-height: 100vh; }
+
+/* ── Page Hero ─────────────────────────────────────────────── */
+.page-hero {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.05) 0%, transparent 70%);
+}
+.page-hero-navy { background: linear-gradient(135deg, var(--navy-dark), var(--navy-light)); }
+.page-hero-saffron { background: linear-gradient(135deg, var(--saffron-dk), var(--saffron-lt)); }
+.page-hero > .container { position: relative; }
+.page-hero-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: .85;
+}
+.page-hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+.page-hero p { font-size: 1.05rem; opacity: .8; max-width: 500px; margin: 0 auto; }
+
+/* ── Notifications Page ─────────────────────────────────────── */
+.notifs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+.notif-card { display: flex; flex-direction: column; gap: 0.75rem; }
+.notif-card-header { display: flex; justify-content: space-between; align-items: center; }
+.notif-date { font-size: 0.8rem; color: var(--gray-400); }
+.notif-card-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+.notif-card-desc { font-size: 0.88rem; color: var(--gray-500); flex: 1; }
+
+/* ── Courses Page ──────────────────────────────────────────── */
+.course-detail-card { display: flex; flex-direction: column; gap: 0.75rem; }
+.course-detail-icon {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--saffron);
+  font-size: 1.4rem;
+}
+.course-detail-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+.course-desc { font-size: 0.88rem; color: var(--gray-500); flex: 1; }
+.course-meta { display: flex; flex-direction: column; gap: 0.4rem; }
+.course-meta-item {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.85rem; color: var(--gray-600);
+}
+.course-meta-item svg { color: var(--saffron); }
+
+/* ── Materials Page ────────────────────────────────────────── */
+.search-bar { display: flex; gap: 0.75rem; margin-bottom: 2rem; }
+.search-bar .form-control { flex: 1; }
+.materials-grid { display: flex; flex-direction: column; gap: 1rem; }
+.material-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+.material-icon {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.material-info { flex: 1; }
+.material-info h4 { font-size: 0.98rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+.material-info p  { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 0.5rem; }
+.material-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.material-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+.file-size { font-size: 0.8rem; color: var(--gray-400); }
+
+/* ── Events Page ───────────────────────────────────────────── */
+.events-full-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.event-full-card { overflow: hidden; padding: 0; }
+.event-img-wrap { height: 220px; overflow: hidden; }
+.event-img { width: 100%; height: 100%; object-fit: cover; }
+.event-full-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.event-full-date { display: flex; align-items: center; gap: 0.5rem; color: var(--saffron-dk); font-weight: 600; font-size: 0.88rem; }
+.event-full-card h3 { font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+.event-venue-full { display: flex; align-items: center; gap: 0.4rem; color: var(--gray-500); font-size: 0.88rem; }
+.event-full-desc { font-size: 0.9rem; color: var(--gray-600); }
+
+/* ── About Page ────────────────────────────────────────────── */
+.about-intro { display: flex; gap: 1.5rem; align-items: flex-start; }
+.about-intro-icon {
+  width: 64px; height: 64px; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--saffron); font-size: 1.8rem;
+}
+.about-card { display: flex; flex-direction: column; gap: 0.75rem; }
+.about-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+.about-card p  { font-size: 0.9rem; color: var(--gray-600); line-height: 1.75; }
+.about-card-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--white);
+}
+.about-card-icon.mission { background: var(--saffron); }
+.about-card-icon.vision  { background: var(--navy); }
+.about-approach { background: var(--off-white); }
+.approach-item { text-align: center; padding: 1rem; }
+.approach-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-lt));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-size: 1.2rem;
+  margin: 0 auto 0.75rem;
+}
+.approach-item h4 { font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+.approach-item p  { font-size: 0.87rem; color: var(--gray-500); }
+
+/* ── Contact Page ──────────────────────────────────────────── */
+.contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-items: start; }
+.contact-info-items { display: flex; flex-direction: column; gap: 1.25rem; }
+.contact-info-item { display: flex; align-items: flex-start; gap: 1rem; }
+.contact-info-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-lt));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-size: 1rem; flex-shrink: 0;
+}
+.contact-info-label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-400); }
+.contact-info-value { display: block; font-size: 0.9rem; color: var(--gray-700); margin-top: 0.15rem; }
+.contact-form-wrap { padding: 2rem; }
+.contact-success { text-align: center; padding: 2.5rem 1rem; }
+.contact-success .success-icon { font-size: 3.5rem; color: var(--success); margin-bottom: 1rem; }
+.contact-success h3 { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+.contact-success p { color: var(--gray-500); margin-bottom: 1.5rem; }
+
+@media (max-width: 768px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .about-intro { flex-direction: column; }
+  .search-bar { flex-direction: column; }
+  .material-card { flex-direction: column; }
+}

@@ -1,0 +1,437 @@
+/* ═════════════════════════════════════════════════════════════════
+   ABOUT PAGE & TRAINER SPOTLIGHT STYLES
+   ═════════════════════════════════════════════════════════════════ */
+
+.about-page {
+  padding-bottom: 4rem;
+}
+
+/* Introduction Section */
+.about-intro-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(10, 31, 68, 0.08);
+  border: 1px solid rgba(10, 31, 68, 0.08);
+  margin-bottom: 3rem;
+}
+
+.about-emblem-wrap {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 6px;
+  background: linear-gradient(135deg, var(--saffron), #00d8ff);
+  box-shadow: 0 12px 36px rgba(244, 129, 10, 0.3);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-emblem-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #0A1F44;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   TRAINER SECTION
+   ═════════════════════════════════════════════════════════════════ */
+.trainer-section {
+  margin: 3.5rem 0;
+}
+
+.trainer-card {
+  background: linear-gradient(145deg, #0A1F44 0%, #0d2757 60%, #13336e 100%);
+  color: #ffffff;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(10, 31, 68, 0.35);
+  border: 1px solid rgba(0, 216, 255, 0.2);
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  position: relative;
+}
+
+.trainer-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(244, 129, 10, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Left: Trainer Visual & Photo */
+.trainer-photo-col {
+  padding: 2.5rem 2rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.trainer-img-wrap {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  padding: 6px;
+  background: linear-gradient(135deg, var(--saffron), #00d8ff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+.trainer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #0A1F44;
+}
+
+.trainer-exp-badge {
+  position: absolute;
+  bottom: 0px;
+  right: -8px;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-dk));
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(244, 129, 10, 0.5);
+  border: 2px solid #0A1F44;
+  white-space: nowrap;
+}
+
+.trainer-badge-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.trainer-credential-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+
+.trainer-credential-pill strong {
+  color: #00d8ff;
+}
+
+.trainer-credential-pill.iit-pill {
+  background: linear-gradient(135deg, rgba(244, 129, 10, 0.15), rgba(244, 129, 10, 0.05));
+  border-color: rgba(244, 129, 10, 0.35);
+  color: #ffd099;
+}
+
+.trainer-credential-pill.iit-pill strong {
+  color: var(--saffron);
+}
+
+.trainer-social-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.trainer-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.25s ease;
+  font-size: 1rem;
+}
+
+.trainer-social-btn:hover {
+  background: var(--saffron);
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(244, 129, 10, 0.4);
+}
+
+.trainer-social-btn.linkedin:hover {
+  background: #0077b5;
+  box-shadow: 0 5px 15px rgba(0, 119, 181, 0.4);
+}
+
+.trainer-social-btn.youtube:hover {
+  background: #ff0000;
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+}
+
+.trainer-social-btn.instagram:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
+}
+
+/* Right: Trainer Content */
+.trainer-info-col {
+  padding: 2.5rem 3rem 2.5rem 2.5rem;
+}
+
+.trainer-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--saffron);
+  margin-bottom: 0.4rem;
+}
+
+.trainer-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.4rem 0;
+  letter-spacing: -0.02em;
+}
+
+.trainer-role {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #00d8ff;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.trainer-bio {
+  color: #cbd5e1;
+  font-size: 0.96rem;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+
+.trainer-bio strong {
+  color: #ffffff;
+}
+
+/* Core Subjects Grid */
+.trainer-section-subhead {
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffd099;
+  margin: 1.5rem 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trainer-subjects-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.subject-chip {
+  background: rgba(0, 216, 255, 0.08);
+  border: 1px solid rgba(0, 216, 255, 0.25);
+  color: #e0f2fe;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.subject-chip:hover {
+  background: rgba(0, 216, 255, 0.18);
+  border-color: #00d8ff;
+  transform: translateY(-1px);
+}
+
+.subject-chip.highlight {
+  background: rgba(244, 129, 10, 0.12);
+  border-color: rgba(244, 129, 10, 0.35);
+  color: #ffedd5;
+}
+
+/* Training Focus Highlights */
+.trainer-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.focus-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.focus-icon {
+  color: var(--saffron);
+  font-size: 1.15rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.focus-card h5 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+}
+
+.focus-card p {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* CTA Row inside Trainer Card */
+.trainer-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   MISSION & VISION & APPROACH
+   ═════════════════════════════════════════════════════════════════ */
+.about-card {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(10, 31, 68, 0.06);
+  border: 1px solid rgba(10, 31, 68, 0.08);
+}
+
+.about-card-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.about-card-icon.mission {
+  background: rgba(244, 129, 10, 0.12);
+  color: var(--saffron-dk);
+}
+
+.about-card-icon.vision {
+  background: rgba(0, 216, 255, 0.12);
+  color: #0284c7;
+}
+
+.about-approach {
+  padding: 2.5rem;
+  margin-top: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(10, 31, 68, 0.06);
+  border: 1px solid rgba(10, 31, 68, 0.08);
+}
+
+.approach-item {
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.approach-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(10, 31, 68, 0.08);
+}
+
+.approach-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(10, 31, 68, 0.08);
+  color: #0A1F44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   RESPONSIVENESS
+   ═════════════════════════════════════════════════════════════════ */
+@media (max-width: 992px) {
+  .trainer-card {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-photo-col {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2rem;
+  }
+
+  .trainer-info-col {
+    padding: 2rem;
+  }
+
+  .trainer-focus-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-intro-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .about-emblem-wrap {
+    margin: 0 auto;
+  }
+
+  .trainer-name {
+    font-size: 1.8rem;
+  }
+
+  .trainer-role {
+    font-size: 0.95rem;
+  }
+}

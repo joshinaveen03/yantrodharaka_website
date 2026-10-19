@@ -1,0 +1,608 @@
+/* ═══════════════════════════════════════════════════════════
+   Online Payment & Receipt Generation Styles
+   ═══════════════════════════════════════════════════════════ */
+
+.payment-page {
+  background: var(--off-white);
+  min-height: 100vh;
+}
+
+.payment-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.payment-card {
+  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+}
+
+/* Course Picker */
+.course-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.course-pick-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--gray-200);
+  background: var(--gray-50);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.course-pick-item:hover {
+  background: var(--white);
+  border-color: var(--saffron-lt);
+}
+
+.course-pick-item.active {
+  border-color: var(--saffron);
+  background: rgba(244, 129, 10, 0.05);
+  box-shadow: 0 4px 14px rgba(244, 129, 10, 0.12);
+}
+
+.course-pick-item input[type="radio"] {
+  accent-color: var(--saffron);
+  width: 18px;
+  height: 18px;
+}
+
+.course-pick-info {
+  flex: 1;
+}
+
+.course-pick-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.course-pick-name {
+  color: var(--navy);
+  font-size: 0.96rem;
+}
+
+.course-pick-badge {
+  background: var(--navy);
+  color: var(--saffron-lt);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.course-pick-desc {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.course-pick-price {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.course-pick-item.active .course-pick-price {
+  color: var(--saffron-dk);
+}
+
+.custom-amount-wrap {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+}
+
+/* Payment Summary Box */
+.payment-summary-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(10, 31, 68, 0.06), rgba(244, 129, 10, 0.08));
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(244, 129, 10, 0.2);
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+
+.summary-amount {
+  font-family: var(--font-head);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--saffron-dk);
+}
+
+/* Payment Method Tabs */
+.payment-method-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+.method-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: var(--radius-md);
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.method-tab:hover {
+  background: var(--gray-200);
+  color: var(--navy);
+}
+
+.method-tab.active {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
+  box-shadow: 0 4px 12px rgba(10, 31, 68, 0.2);
+}
+
+/* UPI QR Card */
+.upi-payment-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upi-qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--white);
+  border: 2px dashed var(--saffron);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 320px;
+}
+
+.upi-qr-frame {
+  width: 220px;
+  height: 220px;
+  background: var(--white);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.upi-qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.upi-scan-hint {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  margin-top: 0.85rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.upi-id-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--navy);
+}
+
+.copy-upi-btn {
+  background: var(--saffron);
+  color: var(--white);
+  border: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-upi-btn:hover {
+  background: var(--saffron-dk);
+}
+
+.upi-app-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.btn-upi-app {
+  text-align: center;
+  padding: 0.6rem 0.3rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.btn-upi-app:hover {
+  transform: translateY(-2px);
+}
+
+.btn-upi-app.gpay    { background: #4285F4; }
+.btn-upi-app.phonepe { background: #5f259f; }
+.btn-upi-app.paytm   { background: #00b9f1; }
+.btn-upi-app.bhim    { background: #138808; }
+
+/* Bank Details Panel */
+.bank-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.bank-lbl {
+  display: block;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  font-weight: 700;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 1.05rem;
+}
+
+.card-mock-panel {
+  padding: 1.5rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+/* Right Column Form */
+.sticky-form {
+  position: sticky;
+  top: 90px;
+}
+
+.payment-security-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--gray-500);
+  margin-bottom: 1.25rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.payment-security-notice .shield-ico {
+  color: var(--success);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.payment-submit-btn {
+  width: 100%;
+  font-size: 1.05rem;
+  padding: 0.9rem;
+  box-shadow: 0 6px 20px rgba(244, 129, 10, 0.4);
+}
+
+/* ══ OFFICIAL RECEIPT STYLING ════════════════════════════════ */
+.receipt-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.receipt-card {
+  background: var(--white);
+  width: 100%;
+  max-width: 780px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(10, 31, 68, 0.15);
+  border: 2px solid var(--gray-200);
+  padding: 3rem;
+  position: relative;
+}
+
+.receipt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.receipt-logo-wrap {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  box-shadow: 0 0 16px rgba(244, 129, 10, 0.3);
+  flex-shrink: 0;
+}
+
+.receipt-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.receipt-org-details h2 {
+  font-family: var(--font-head);
+  font-size: 1.45rem;
+  color: var(--navy);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.receipt-org-sub {
+  font-size: 0.88rem;
+  color: var(--saffron-dk);
+  font-weight: 600;
+  margin: 2px 0;
+}
+
+.receipt-org-contact {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.receipt-status-stamp {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+  border: 2px solid var(--success);
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  transform: rotate(-4deg);
+}
+
+.receipt-divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--saffron), var(--navy), var(--saffron));
+  margin: 1.75rem 0;
+}
+
+.receipt-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  background: var(--gray-50);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.receipt-title-bar h3 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.receipt-number {
+  font-size: 0.88rem;
+  color: var(--gray-600);
+}
+
+.receipt-number strong {
+  color: var(--navy);
+}
+
+.receipt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.receipt-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.receipt-item.full-width {
+  grid-column: span 2;
+}
+
+.receipt-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.receipt-value {
+  font-size: 1.02rem;
+  color: var(--navy);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.highlight-course {
+  color: var(--saffron-dk);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.receipt-total-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  color: var(--white);
+  padding: 1.25rem 2rem;
+  border-radius: var(--radius-md);
+  margin: 2rem 0 1.5rem;
+  box-shadow: 0 6px 20px rgba(10, 31, 68, 0.2);
+}
+
+.total-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.total-amount {
+  font-family: var(--font-head);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--saffron-lt);
+}
+
+.receipt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--gray-300);
+}
+
+.receipt-footer p {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  max-width: 440px;
+  line-height: 1.6;
+}
+
+.receipt-seal {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.receipt-seal span {
+  font-size: 0.72rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.receipt-seal strong {
+  font-size: 0.95rem;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.receipt-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .navbar, .footer, .page-hero, .no-print {
+    display: none !important;
+  }
+  .receipt-card {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    padding: 1.5rem !important;
+  }
+  .receipt-container {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 990px) {
+  .payment-layout {
+    grid-template-columns: 1fr;
+  }
+  .sticky-form {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .payment-card {
+    padding: 1.5rem;
+  }
+  .payment-method-tabs {
+    grid-template-columns: 1fr;
+  }
+  .receipt-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .receipt-grid {
+    grid-template-columns: 1fr;
+  }
+  .receipt-item.full-width {
+    grid-column: span 1;
+  }
+  .receipt-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .receipt-seal {
+    text-align: center;
+  }
+}
