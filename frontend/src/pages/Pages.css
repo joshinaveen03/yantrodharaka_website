@@ -32,16 +32,102 @@
 .page-hero p { font-size: 1.05rem; opacity: .8; max-width: 500px; margin: 0 auto; }
 
 /* ── Notifications Page ─────────────────────────────────────── */
-.notifs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.5rem;
+.notifs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
-.notif-card { display: flex; flex-direction: column; gap: 0.75rem; }
-.notif-card-header { display: flex; justify-content: space-between; align-items: center; }
-.notif-date { font-size: 0.8rem; color: var(--gray-400); }
-.notif-card-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
-.notif-card-desc { font-size: 0.88rem; color: var(--gray-500); flex: 1; }
+
+.notif-spotlight-box {
+  background: linear-gradient(145deg, #102042 0%, #071329 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 2.5rem;
+  color: #ffffff;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.32);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.notif-spotlight-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.4);
+  border-color: rgba(244, 129, 10, 0.35);
+}
+
+.notif-spotlight-top {
+  margin-bottom: 1.25rem;
+}
+
+.spotlight-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(244, 129, 10, 0.15);
+  border: 1px solid rgba(244, 129, 10, 0.4);
+  color: #ffaa4d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+}
+
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--saffron, #f4810a);
+  border-radius: 50%;
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0%   { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(244, 129, 10, 0.7); }
+  70%  { transform: scale(1);   box-shadow: 0 0 0 7px rgba(244, 129, 10, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(244, 129, 10, 0); }
+}
+
+.notif-spotlight-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.spotlight-title-highlight {
+  color: var(--saffron, #f4810a);
+}
+
+.notif-spotlight-lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 2rem;
+  max-width: 900px;
+}
+
+.notif-spotlight-box .spotlight-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+  margin-bottom: 2.25rem;
+}
+
+@media (max-width: 640px) {
+  .notif-spotlight-box {
+    padding: 1.5rem;
+  }
+  .notif-spotlight-title {
+    font-size: 1.6rem;
+  }
+  .notif-spotlight-box .spotlight-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ── Courses Page ──────────────────────────────────────────── */
 .course-detail-card { display: flex; flex-direction: column; gap: 0.75rem; }

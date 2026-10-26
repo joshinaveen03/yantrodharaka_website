@@ -28,6 +28,8 @@ import AdminMaterials     from './admin/pages/AdminMaterials';
 import AdminEvents        from './admin/pages/AdminEvents';
 import AdminEnquiries     from './admin/pages/AdminEnquiries';
 import AdminPayments      from './admin/pages/AdminPayments';
+import AdminGallery       from './admin/pages/AdminGallery';
+import AdminContactSettings from './admin/pages/AdminContactSettings';
 
 // CSS
 import './index.css';
@@ -70,8 +72,10 @@ export default function App() {
             <Route path="courses"       element={<AdminCourses />} />
             <Route path="materials"     element={<AdminMaterials />} />
             <Route path="events"        element={<AdminEvents />} />
+            <Route path="gallery"       element={<AdminGallery />} />
             <Route path="enquiries"     element={<AdminEnquiries />} />
             <Route path="payments"      element={<AdminPayments />} />
+            <Route path="contact-settings" element={<AdminContactSettings />} />
           </Route>
 
           {/* Fallback */}

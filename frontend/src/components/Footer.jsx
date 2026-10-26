@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaInstagram, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
+import { contactApi } from '../api/endpoints';
 import logoImg from '../assets/logo.png';
 import './Footer.css';
 
 export default function Footer() {
+  const [contact, setContact] = useState({
+    primary_phone: '+91 94832 08991',
+    email: 'robo.yantrodharaka2026@gmail.com',
+    address: 'Yantrodharaka Online Coaching Center & STEM Labs',
+    instagram_url: 'https://www.instagram.com/robo.yantrodharaka2026?rpxt=cWlqeTU0b3ZwcHky',
+    youtube_url: 'https://www.youtube.com/@robo.yantrodharaka2026',
+    linkedin_url: 'https://www.linkedin.com/in/robo-yantrodharaka-8166a33ab/',
+  });
+
+  useEffect(() => {
+    contactApi.getSettings()
+      .then(res => {
+        if (res.data) setContact(prev => ({ ...prev, ...res.data }));
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer className="footer">
       <div className="footer-wave" />
@@ -16,44 +34,50 @@ export default function Footer() {
                 <img src={logoImg} alt="Yantrodharaka" className="footer-logo-img" />
               </div>
               <div className="footer-logo-text">
-                <span className="footer-logo-title">Yantrodharaka</span>
-                <small className="footer-logo-sub">AI &bull; STEM &bull; Innovation</small>
+                <span className="footer-logo-title">YANTRODHARAKA Online Coaching Center</span>
+                <small className="footer-logo-sub">Build Skills | Create Innovation | Shape The Future</small>
               </div>
             </div>
             <p className="footer-tagline">
-              Empowering young minds with AI, STEM, Robotics, and academic excellence for a smarter, technology-driven future.
+              Build Skills | Create Innovation | Shape The Future. Empowering young minds with AI, STEM, Robotics, and foundational academic excellence.
             </p>
             <div className="footer-socials">
-              <a
-                href="https://www.instagram.com/robo.yantrodharaka2026?rpxt=cWlqeTU0b3ZwcHky"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                id="footer-ig"
-                title="Follow us on Instagram"
-              >
-                <FaInstagram />
-              </a>
-              <a
-                href="https://www.youtube.com/@robo.yantrodharaka2026"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                id="footer-yt"
-                title="Subscribe on YouTube"
-              >
-                <FaYoutube />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/robo-yantrodharaka-8166a33ab/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                id="footer-li"
-                title="Connect on LinkedIn"
-              >
-                <FaLinkedinIn />
-              </a>
+              {contact.instagram_url && (
+                <a
+                  href={contact.instagram_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  id="footer-ig"
+                  title="Follow us on Instagram"
+                >
+                  <FaInstagram />
+                </a>
+              )}
+              {contact.youtube_url && (
+                <a
+                  href={contact.youtube_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  id="footer-yt"
+                  title="Subscribe on YouTube"
+                >
+                  <FaYoutube />
+                </a>
+              )}
+              {contact.linkedin_url && (
+                <a
+                  href={contact.linkedin_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  id="footer-li"
+                  title="Connect on LinkedIn"
+                >
+                  <FaLinkedinIn />
+                </a>
+              )}
             </div>
           </div>
 
@@ -74,17 +98,22 @@ export default function Footer() {
             <ul className="footer-contact">
               <li>
                 <FaPhone className="contact-icon" />
-                <a href="tel:+919483208991" style={{ color: 'inherit' }}>+91 94832 08991</a>
+                <a href={`tel:${(contact.primary_phone || '+91 94832 08991').replace(/\s+/g, '')}`} style={{ color: 'inherit' }}>
+                  {contact.primary_phone || '+91 94832 08991'}
+                </a>
               </li>
               <li>
                 <FaEnvelope className="contact-icon" />
-                <a href="mailto:robo.yantrodharaka2026@gmail.com" style={{ color: 'inherit' }}>
-                  robo.yantrodharaka2026@gmail.com
+                <a href={`mailto:${contact.email || 'robo.yantrodharaka2026@gmail.com'}`} style={{ color: 'inherit', wordBreak: 'break-all' }}>
+                  {contact.email || 'robo.yantrodharaka2026@gmail.com'}
                 </a>
               </li>
               <li>
                 <FaMapMarkerAlt className="contact-icon" />
-                <span>Yantrodharaka AI &amp; STEM Coaching</span>
+                <span>
+                  {contact.address || 'Yantrodharaka AI & STEM Coaching'}
+                  {contact.city ? `, ${contact.city}` : ''}
+                </span>
               </li>
             </ul>
           </div>

@@ -3,20 +3,22 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   FaTachometerAlt, FaBell, FaBook,
   FaFile, FaCalendarAlt, FaEnvelope, FaSignOutAlt,
-  FaBars, FaTimes, FaUser, FaCreditCard
+  FaBars, FaTimes, FaUser, FaCreditCard, FaImages, FaPhoneAlt
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 import './AdminLayout.css';
 
 const NAV = [
-  { to: '/admin/dashboard',     icon: FaTachometerAlt, label: 'Dashboard' },
-  { to: '/admin/notifications', icon: FaBell,          label: 'Notifications' },
-  { to: '/admin/courses',       icon: FaBook,          label: 'Courses' },
-  { to: '/admin/materials',     icon: FaFile,          label: 'Study Materials' },
-  { to: '/admin/events',        icon: FaCalendarAlt,   label: 'Events' },
-  { to: '/admin/enquiries',     icon: FaEnvelope,      label: 'Enquiries' },
-  { to: '/admin/payments',      icon: FaCreditCard,    label: 'Fee Payments' },
+  { to: '/admin/dashboard',        icon: FaTachometerAlt, label: 'Dashboard' },
+  { to: '/admin/notifications',    icon: FaBell,          label: 'Notifications' },
+  { to: '/admin/courses',          icon: FaBook,          label: 'Courses' },
+  { to: '/admin/materials',        icon: FaFile,          label: 'Study Materials' },
+  { to: '/admin/events',           icon: FaCalendarAlt,   label: 'Events' },
+  { to: '/admin/gallery',          icon: FaImages,        label: 'Gallery' },
+  { to: '/admin/enquiries',        icon: FaEnvelope,      label: 'Enquiries' },
+  { to: '/admin/payments',         icon: FaCreditCard,    label: 'Fee Payments' },
+  { to: '/admin/contact-settings', icon: FaPhoneAlt,      label: 'Contact Details' },
 ];
 
 export default function AdminLayout() {

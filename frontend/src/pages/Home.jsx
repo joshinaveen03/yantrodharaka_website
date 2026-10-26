@@ -24,7 +24,7 @@ const HERO_SLIDES = [
     id: 'stem',
     badge: 'AI & STEM Education',
     badgeIcon: FaRobot,
-    quote: 'Empowering young minds with AI & STEM education for a smarter future.',
+    quote: 'Igniting curiosity through hands-on robotics, computational logic, and experiential discovery.',
     title: 'Empowering Young Minds for a Smarter Future',
     subtitle: 'Nurturing curiosity, computational thinking, and hands-on scientific discovery through next-generation robotics, coding, and experiential learning.',
     image: backdropStem,
@@ -39,7 +39,7 @@ const HERO_SLIDES = [
     id: 'innovation',
     badge: 'Future Tech & Innovation',
     badgeIcon: FaRocket,
-    quote: 'Innovation is the key that unlocks the future of a technology-driven world.',
+    quote: 'Transforming creative curiosity into tangible technology with Arduino, IoT, and embedded systems.',
     title: 'Innovation Unlocks the Future of Technology',
     subtitle: 'Empowering students to solve real-world challenges through embedded circuits, Arduino programming, IoT, and modern engineering thinking.',
     image: backdropInnovation,
@@ -54,7 +54,7 @@ const HERO_SLIDES = [
     id: 'genai',
     badge: 'Generative AI Academy',
     badgeIcon: FaBrain,
-    quote: 'Master Generative AI, Neural Networks & Future Skills with Yantrodharaka.',
+    quote: 'Step into tomorrow with Neural Networks, Generative AI models, and Intelligent Agentic systems.',
     title: 'Leading the Generative AI Revolution',
     subtitle: 'Step into tomorrow with state-of-the-art training in machine learning concepts, generative models, creative prompt engineering, and futuristic AI tools.',
     image: backdropGenai,
@@ -70,7 +70,9 @@ const HERO_SLIDES = [
 function StatCard({ icon: Icon, value, label, accent }) {
   return (
     <div className="stat-card" style={{ '--card-accent': accent || 'var(--saffron)' }}>
-      <div className="stat-icon"><Icon /></div>
+      <div className="stat-icon-wrap" style={{ color: accent, borderColor: `${accent}44`, background: `radial-gradient(circle, ${accent}22 0%, rgba(10,31,68,0.5) 100%)` }}>
+        <Icon />
+      </div>
       <div className="stat-value">{value}</div>
       <div className="stat-label">{label}</div>
     </div>
@@ -80,23 +82,22 @@ function StatCard({ icon: Icon, value, label, accent }) {
 function NotifItem({ n }) {
   const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
   return (
-    <div className="notif-item">
-      <div className="notif-dot" />
-      <div className="notif-content">
+    <div className="home-notif-item">
+      <div className="home-notif-left">
+        <span className="notif-badge-pill">OFFICIAL</span>
+        <span className="home-notif-date">
+          <FaCalendarAlt style={{ marginRight: '4px', color: 'var(--saffron)' }} />
+          {new Date(n.publication_date || n.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
+        </span>
+      </div>
+      <div className="home-notif-content">
         <h4>{n.title}</h4>
-        <p>{n.description}</p>
-        <div className="notif-meta">
-          <span>{new Date(n.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}</span>
-          {n.attachment_filename && (
-            <a
-              href={`${base}/api/files/${n.attachment_filename}`}
-              target="_blank" rel="noreferrer"
-              className="notif-download"
-            >
-              <FaFilePdf /> Download PDF
-            </a>
-          )}
-        </div>
+        {n.description && <p>{n.description.length > 140 ? n.description.slice(0, 140) + '…' : n.description}</p>}
+      </div>
+      <div className="home-notif-action">
+        <Link to="/notifications" className="btn btn-outline btn-sm">
+          View &amp; Register &rarr;
+        </Link>
       </div>
     </div>
   );
@@ -105,11 +106,16 @@ function NotifItem({ n }) {
 function CourseCard({ c }) {
   return (
     <div className="home-course-card">
-      <div className="course-card-icon"><FaGraduationCap /></div>
+      <div className="course-card-top">
+        <div className="course-card-icon"><FaGraduationCap /></div>
+        {c.duration && <span className="badge badge-saffron">⏱ {c.duration}</span>}
+      </div>
       <h3>{c.name}</h3>
       <p>{c.description}</p>
-      {c.duration && <span className="badge badge-saffron">⏱ {c.duration}</span>}
-      <Link to="/contact" className="btn btn-outline-saffron btn-sm mt-1">Enquire Now</Link>
+      <div className="course-card-footer">
+        <Link to="/contact" className="btn btn-outline-saffron btn-sm">Enquire Now</Link>
+        <Link to="/courses" className="btn btn-primary btn-sm">Details &rarr;</Link>
+      </div>
     </div>
   );
 }
@@ -121,10 +127,13 @@ function EventCard({ e }) {
         <span className="event-day">{e.event_date ? new Date(e.event_date).getDate() : '—'}</span>
         <span className="event-month">{e.event_date ? new Date(e.event_date).toLocaleString('en-IN', { month: 'short' }) : ''}</span>
       </div>
-      <div>
+      <div className="event-content">
         <h4>{e.title}</h4>
         {e.venue && <p className="event-venue">📍 {e.venue}</p>}
         <p className="event-desc">{e.description}</p>
+      </div>
+      <div className="event-action">
+        <Link to="/events" className="btn btn-outline btn-sm">Event Info &rarr;</Link>
       </div>
     </div>
   );
@@ -149,7 +158,7 @@ export default function Home() {
   }, [isPaused]);
 
   useEffect(() => {
-    document.title = 'Yantrodharaka – AI, STEM & Innovation Coaching';
+    document.title = 'YANTRODHARAKA Online Coaching Center – Build Skills | Create Innovation | Shape The Future';
     Promise.all([
       notificationsApi.list(1, 4),
       coursesApi.list(1),
@@ -187,6 +196,13 @@ export default function Home() {
         <div className="container hero-content">
           {/* Left Text / Info */}
           <div className="hero-text">
+            <div className="hero-announcement-pill">
+              <span className="hero-brand-pulse-dot" />
+              <span className="pill-strong">Admissions Open 2026–2027</span>
+              <span className="hero-brand-divider">•</span>
+              <span className="pill-tag">Hands-on AI, Robotics &amp; STEM Coaching</span>
+            </div>
+
             <div className="hero-badge" style={{ borderColor: `${slide.colorAccent}55` }}>
               <slide.badgeIcon style={{ color: slide.colorAccent }} />
               <span>{slide.badge}</span>
@@ -571,7 +587,7 @@ export default function Home() {
       {/* ══ LATEST NOTIFICATIONS ══════════════════════════════════ */}
       <section className="section bg-white">
         <div className="container">
-          <div className="section-header">
+          <div className="section-header text-center">
             <span className="badge badge-saffron"><FaBell /> Latest Notifications</span>
             <h2 className="section-title">Stay Updated</h2>
             <p className="section-subtitle">Important announcements, batch schedules, and center updates</p>
@@ -596,7 +612,7 @@ export default function Home() {
       {/* ══ FEATURED COURSES ══════════════════════════════════════ */}
       <section className="section courses-section">
         <div className="container">
-          <div className="section-header">
+          <div className="section-header text-center">
             <span className="badge badge-navy"><FaBook /> Flagship Programs</span>
             <h2 className="section-title">Curated For Future Leaders</h2>
             <p className="section-subtitle">From academic foundations to AI &amp; Robotics masterclasses</p>
@@ -619,7 +635,7 @@ export default function Home() {
       {/* ══ UPCOMING EVENTS ═══════════════════════════════════════ */}
       <section className="section bg-white">
         <div className="container">
-          <div className="section-header">
+          <div className="section-header text-center">
             <span className="badge badge-saffron"><FaCalendarAlt /> Live &amp; Upcoming</span>
             <h2 className="section-title">Workshops &amp; Exhibitions</h2>
             <p className="section-subtitle">Don't miss our upcoming STEM competitions, demo days, and guest lectures</p>

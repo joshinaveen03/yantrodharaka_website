@@ -3,7 +3,22 @@ import { FaBell, FaPlus, FaEdit, FaTrash, FaDownload, FaUpload } from 'react-ico
 import { notificationsApi } from '../../api/endpoints';
 import './Admin.css';
 
-const EMPTY = { title: '', description: '', publication_date: '', is_published: false };
+const EMPTY = {
+  title: 'Welcome to the Python Basic Crash Course!',
+  description: 'Kickstart your programming journey with our Python Basic Crash Course, specially designed for school students, college students, and beginners who want to learn Python programming from scratch.',
+  publication_date: '',
+  is_published: true,
+  dates: '15 & 16 August 2026',
+  dates_sub: 'Saturday & Sunday',
+  timing: '5:00 PM – 7:00 PM IST',
+  timing_sub: 'Live Interactive Sessions',
+  platform: 'Microsoft Teams',
+  platform_sub: 'Online Hands-on Classroom',
+  fee: '₹49 Only',
+  perks: 'Certificate & Code Files',
+  payment_url: '/payment?course=python-crash',
+  form_url: 'https://forms.gle/TAYVJrSX7DAbpuFN8',
+};
 const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export default function AdminNotifications() {
@@ -35,7 +50,22 @@ export default function AdminNotifications() {
   };
   const openEdit = (n) => {
     setEditing(n);
-    setForm({ title: n.title, description: n.description || '', publication_date: n.publication_date?.slice(0,16) || '', is_published: n.is_published });
+    setForm({
+      title: n.title || '',
+      description: n.description || '',
+      publication_date: n.publication_date?.slice(0,16) || '',
+      is_published: n.is_published,
+      dates: n.dates || '15 & 16 August 2026',
+      dates_sub: n.dates_sub || 'Saturday & Sunday',
+      timing: n.timing || '5:00 PM – 7:00 PM IST',
+      timing_sub: n.timing_sub || 'Live Interactive Sessions',
+      platform: n.platform || 'Microsoft Teams',
+      platform_sub: n.platform_sub || 'Online Hands-on Classroom',
+      fee: n.fee || '₹49 Only',
+      perks: n.perks || 'Certificate & Code Files',
+      payment_url: n.payment_url || '/payment?course=python-crash',
+      form_url: n.form_url || 'https://forms.gle/TAYVJrSX7DAbpuFN8',
+    });
     setFile(null); setError('');
     setShowModal(true);
   };
@@ -45,10 +75,11 @@ export default function AdminNotifications() {
     if (!form.title.trim()) { setError('Title is required'); return; }
     setSaving(true); setError('');
     const fd = new FormData();
-    fd.append('title', form.title);
-    fd.append('description', form.description);
-    fd.append('is_published', form.is_published);
-    if (form.publication_date) fd.append('publication_date', form.publication_date);
+    Object.entries(form).forEach(([key, val]) => {
+      if (val !== undefined && val !== null) {
+        fd.append(key, val);
+      }
+    });
     if (file) fd.append('attachment', file);
     try {
       if (editing) await notificationsApi.update(editing.id, fd);
@@ -155,10 +186,79 @@ export default function AdminNotifications() {
                   value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
               </div>
               <div className="form-group">
-                <label className="form-label">Description</label>
+                <label className="form-label">Description / Lead *</label>
                 <textarea className="form-control" rows={3}
                   value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
               </div>
+
+              {/* 4 Highlight Cards Fields */}
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', margin: '1rem 0' }}>
+                <h4 style={{ margin: '0 0 0.75rem 0', fontSize: '0.92rem', color: 'var(--navy)' }}>
+                  📌 Spotlight 4-Card Highlights
+                </h4>
+
+                <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Dates Label</label>
+                    <input className="form-control" value={form.dates} onChange={e => setForm(f => ({ ...f, dates: e.target.value }))} placeholder="e.g. 15 & 16 August 2026" />
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Dates Subtitle</label>
+                    <input className="form-control" value={form.dates_sub} onChange={e => setForm(f => ({ ...f, dates_sub: e.target.value }))} placeholder="e.g. Saturday & Sunday" />
+                  </div>
+                </div>
+
+                <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Timing Label</label>
+                    <input className="form-control" value={form.timing} onChange={e => setForm(f => ({ ...f, timing: e.target.value }))} placeholder="e.g. 5:00 PM – 7:00 PM IST" />
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Timing Subtitle</label>
+                    <input className="form-control" value={form.timing_sub} onChange={e => setForm(f => ({ ...f, timing_sub: e.target.value }))} placeholder="e.g. Live Interactive Sessions" />
+                  </div>
+                </div>
+
+                <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Platform</label>
+                    <input className="form-control" value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))} placeholder="e.g. Microsoft Teams" />
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Platform Subtitle</label>
+                    <input className="form-control" value={form.platform_sub} onChange={e => setForm(f => ({ ...f, platform_sub: e.target.value }))} placeholder="e.g. Online Hands-on Classroom" />
+                  </div>
+                </div>
+
+                <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Fee</label>
+                    <input className="form-control" value={form.fee} onChange={e => setForm(f => ({ ...f, fee: e.target.value }))} placeholder="e.g. ₹49 Only" />
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Perks</label>
+                    <input className="form-control" value={form.perks} onChange={e => setForm(f => ({ ...f, perks: e.target.value }))} placeholder="e.g. Certificate & Code Files" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons Links */}
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', margin: '1rem 0' }}>
+                <h4 style={{ margin: '0 0 0.75rem 0', fontSize: '0.92rem', color: 'var(--navy)' }}>
+                  🔗 Action Buttons &amp; Registration Links
+                </h4>
+                <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Payment Link</label>
+                    <input className="form-control" value={form.payment_url} onChange={e => setForm(f => ({ ...f, payment_url: e.target.value }))} placeholder="/payment?course=python-crash" />
+                  </div>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.78rem' }}>Google Form URL</label>
+                    <input className="form-control" value={form.form_url} onChange={e => setForm(f => ({ ...f, form_url: e.target.value }))} placeholder="https://forms.gle/..." />
+                  </div>
+                </div>
+              </div>
+
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Publication Date</label>

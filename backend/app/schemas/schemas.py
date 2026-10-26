@@ -31,6 +31,16 @@ class NotificationBase(BaseModel):
     description: Optional[str] = None
     publication_date: Optional[datetime] = None
     is_published: bool = False
+    dates: Optional[str] = "15 & 16 August 2026"
+    dates_sub: Optional[str] = "Saturday & Sunday"
+    timing: Optional[str] = "5:00 PM – 7:00 PM IST"
+    timing_sub: Optional[str] = "Live Interactive Sessions"
+    platform: Optional[str] = "Microsoft Teams"
+    platform_sub: Optional[str] = "Online Hands-on Classroom"
+    fee: Optional[str] = "₹49 Only"
+    perks: Optional[str] = "Certificate & Code Files"
+    payment_url: Optional[str] = "/payment?course=python-crash"
+    form_url: Optional[str] = "https://forms.gle/TAYVJrSX7DAbpuFN8"
 
 
 class NotificationCreate(NotificationBase):
@@ -42,6 +52,16 @@ class NotificationUpdate(BaseModel):
     description: Optional[str] = None
     publication_date: Optional[datetime] = None
     is_published: Optional[bool] = None
+    dates: Optional[str] = None
+    dates_sub: Optional[str] = None
+    timing: Optional[str] = None
+    timing_sub: Optional[str] = None
+    platform: Optional[str] = None
+    platform_sub: Optional[str] = None
+    fee: Optional[str] = None
+    perks: Optional[str] = None
+    payment_url: Optional[str] = None
+    form_url: Optional[str] = None
 
 
 class NotificationOut(NotificationBase):
@@ -197,4 +217,136 @@ class PaginatedResponse(BaseModel):
     page: int
     page_size: int
     pages: int
+
+
+# ── Gallery ───────────────────────────────────────────────────────────────────
+class GalleryItemBase(BaseModel):
+    title: str
+    caption: Optional[str] = None
+    category: str = "workshops"
+    date_label: Optional[str] = None
+    badge: Optional[str] = None
+    image_url: Optional[str] = None
+    order: Optional[int] = 0
+
+
+class GalleryItemCreate(GalleryItemBase):
+    pass
+
+
+class GalleryItemUpdate(BaseModel):
+    title: Optional[str] = None
+    caption: Optional[str] = None
+    category: Optional[str] = None
+    date_label: Optional[str] = None
+    badge: Optional[str] = None
+    image_url: Optional[str] = None
+    order: Optional[int] = None
+
+
+class GalleryItemOut(GalleryItemBase):
+    id: str
+    image_filename: Optional[str] = None
+    image_src: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ── Payment Packages ──────────────────────────────────────────────────────────
+class PaymentPackageBase(BaseModel):
+    pkg_key: str
+    name: str
+    amount: int
+    badge: Optional[str] = None
+    description: Optional[str] = None
+    is_custom: bool = False
+    is_active: bool = True
+    display_order: int = 0
+
+
+class PaymentPackageCreate(PaymentPackageBase):
+    pass
+
+
+class PaymentPackageUpdate(BaseModel):
+    pkg_key: Optional[str] = None
+    name: Optional[str] = None
+    amount: Optional[int] = None
+    badge: Optional[str] = None
+    description: Optional[str] = None
+    is_custom: Optional[bool] = None
+    is_active: Optional[bool] = None
+    display_order: Optional[int] = None
+
+
+class PaymentPackageOut(PaymentPackageBase):
+    id: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ── Payment Settings ──────────────────────────────────────────────────────────
+class PaymentSettingBase(BaseModel):
+    upi_id: str = "9483208991@upi"
+    payee_name: str = "Yantrodharaka Coaching Centre"
+    enable_upi: bool = True
+    enable_bank: bool = True
+    enable_card: bool = True
+    bank_name: Optional[str] = "State Bank of India"
+    account_name: Optional[str] = "Yantrodharaka Coaching Centre"
+    account_number: Optional[str] = "9483208991001"
+    ifsc_code: Optional[str] = "SBIN0001234"
+    branch: Optional[str] = "Main Branch"
+    contact_phone: Optional[str] = "+91 94832 08991"
+    contact_email: Optional[str] = "robo.yantrodharaka2026@gmail.com"
+
+
+class PaymentSettingUpdate(PaymentSettingBase):
+    pass
+
+
+class PaymentSettingOut(PaymentSettingBase):
+    id: str
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ── Contact Settings ──────────────────────────────────────────────────────────
+class ContactSettingBase(BaseModel):
+    primary_phone: str = "+91 94832 08991"
+    secondary_phone: Optional[str] = None
+    whatsapp_number: Optional[str] = "+91 94832 08991"
+    email: str = "robo.yantrodharaka2026@gmail.com"
+    secondary_email: Optional[str] = None
+    address: Optional[str] = "Yantrodharaka Online Coaching Center & STEM Labs, Bengaluru, Karnataka, India"
+    city: Optional[str] = "Bengaluru"
+    state: Optional[str] = "Karnataka"
+    pincode: Optional[str] = "560001"
+    working_hours: Optional[str] = "Mon – Sat: 9:00 AM – 7:00 PM | Sun: 10:00 AM – 4:00 PM"
+    instagram_url: Optional[str] = "https://www.instagram.com/robo.yantrodharaka2026?rpxt=cWlqeTU0b3ZwcHky"
+    youtube_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    map_embed_url: Optional[str] = None
+
+
+class ContactSettingUpdate(ContactSettingBase):
+    pass
+
+
+class ContactSettingOut(ContactSettingBase):
+    id: str
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+
 

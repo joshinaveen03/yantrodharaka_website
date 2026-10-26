@@ -50,10 +50,26 @@ export default function Payment() {
   const [searchParams] = useSearchParams();
   const preSelectedCourse = searchParams.get('course') || 'python-crash';
 
+  const [courses, setCourses] = useState(COURSES);
   const [selectedCourseId, setSelectedCourseId] = useState(preSelectedCourse);
   const [customAmount, setCustomAmount] = useState(100);
   const [paymentMethod, setPaymentMethod] = useState('UPI'); // UPI | BANK | CARD
   const [copiedUpi, setCopiedUpi] = useState(false);
+
+  const [settings, setSettings] = useState({
+    upi_id: '9483208991@upi',
+    payee_name: 'Yantrodharaka Coaching Centre',
+    enable_upi: true,
+    enable_bank: true,
+    enable_card: true,
+    bank_name: 'State Bank of India',
+    account_name: 'Yantrodharaka Coaching Centre',
+    account_number: '9483208991001',
+    ifsc_code: 'SBIN0001234',
+    branch: 'Main Branch',
+    contact_phone: '+91 94832 08991',
+    contact_email: 'robo.yantrodharaka2026@gmail.com',
+  });
 
   const [form, setForm] = useState({
     student_name: '',
@@ -72,14 +88,45 @@ export default function Payment() {
 
   useEffect(() => {
     document.title = 'Online Fee Payment – Yantrodharaka Academy';
+
+    // Fetch dynamic course fee packages from Admin API
+    paymentsApi.getPackages()
+      .then(res => {
+        if (res.data && res.data.length > 0) {
+          const mapped = res.data.map(p => ({
+            id: p.pkg_key,
+            name: p.name,
+            amount: p.amount,
+            badge: p.badge,
+            desc: p.description,
+            is_custom: p.is_custom,
+          }));
+          setCourses(mapped);
+          // if preSelected is not in list, fallback to first
+          if (!mapped.some(c => c.id === preSelectedCourse)) {
+            setSelectedCourseId(mapped[0].id);
+          }
+        }
+      })
+      .catch(() => {});
+
+    // Fetch dynamic UPI & bank settings from Admin API
+    paymentsApi.getSettings()
+      .then(res => {
+        if (res.data) setSettings(res.data);
+      })
+      .catch(() => {});
   }, []);
 
-  const activeCourse = COURSES.find(c => c.id === selectedCourseId) || COURSES[0];
-  const payableAmount = selectedCourseId === 'custom' ? Number(customAmount) || 1 : activeCourse.amount;
+  const activeCourse = courses.find(c => c.id === selectedCourseId) || courses[0] || COURSES[0];
+  const payableAmount = (activeCourse.is_custom || selectedCourseId === 'custom')
+    ? (Number(customAmount) || 1)
+    : activeCourse.amount;
 
-  // Standard UPI deep-link URL
-  const upiId = '9483208991@upi';
-  const upiUrl = `upi://pay?pa=${upiId}&pn=Yantrodharaka%20Coaching%20Centre&am=${payableAmount}&cu=INR&tn=${encodeURIComponent(activeCourse.name)}`;
+  // Dynamic UPI deep-link URL configured from Admin
+  const upiId = settings.upi_id || '9483208991@upi';
+  const payeeName = settings.payee_name || 'Yantrodharaka Coaching Centre';
+  const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${payableAmount}&cu=INR&tn=${encodeURIComponent(activeCourse.name)}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(upiUrl)}`;
 
   const handleCopyUpi = () => {
@@ -162,7 +209,7 @@ export default function Payment() {
                 <div className="receipt-org-details">
                   <h2>YANTRODHARAKA COACHING CENTRE</h2>
                   <p className="receipt-org-sub">Robotics &amp; STEM Education Academy</p>
-                  <p className="receipt-org-contact">📞 +91 94832 08991 | ✉️ robo.yantrodharaka2026@gmail.com</p>
+                  <p className="receipt-org-contact">📞 {settings.contact_phone || '+91 94832 08991'} | ✉️ {settings.contact_email || 'robo.yantrodharaka2026@gmail.com'}</p>
                 </div>
                 <div className="receipt-status-stamp">
                   <FaCheckCircle />
@@ -258,7 +305,7 @@ export default function Payment() {
                   1. Select Course / Program
                 </h2>
                 <div className="course-picker">
-                  {COURSES.map(c => (
+                  {courses.map(c => (
                     <label
                       key={c.id}
                       className={`course-pick-item ${selectedCourseId === c.id ? 'active' : ''}`}
@@ -273,12 +320,12 @@ export default function Payment() {
                       <div className="course-pick-info">
                         <div className="course-pick-top">
                           <strong className="course-pick-name">{c.name}</strong>
-                          <span className="course-pick-badge">{c.badge}</span>
+                          {c.badge && <span className="course-pick-badge">{c.badge}</span>}
                         </div>
-                        <p className="course-pick-desc">{c.desc}</p>
+                        {c.desc && <p className="course-pick-desc">{c.desc}</p>}
                       </div>
                       <div className="course-pick-price">
-                        {c.id === 'custom' ? (
+                        {c.id === 'custom' || c.is_custom ? (
                           <span>Custom</span>
                         ) : (
                           <span>₹{c.amount}</span>
@@ -288,7 +335,7 @@ export default function Payment() {
                   ))}
                 </div>
 
-                {selectedCourseId === 'custom' && (
+                {(selectedCourseId === 'custom' || activeCourse.is_custom) && (
                   <div className="custom-amount-wrap">
                     <label className="form-label" htmlFor="custom-amt">
                       Enter Amount to Pay (₹):
@@ -385,20 +432,24 @@ export default function Payment() {
                   <div className="bank-details-panel">
                     <div className="bank-info-grid">
                       <div>
+                        <span className="bank-lbl">Bank Name:</span>
+                        <strong>{settings.bank_name || 'State Bank of India'}</strong>
+                      </div>
+                      <div>
                         <span className="bank-lbl">Account Name:</span>
-                        <strong>Yantrodharaka Coaching Centre</strong>
+                        <strong>{settings.account_name || 'Yantrodharaka Coaching Centre'}</strong>
                       </div>
                       <div>
                         <span className="bank-lbl">Account Number:</span>
-                        <strong className="mono">9483208991001</strong>
+                        <strong className="mono">{settings.account_number || '9483208991001'}</strong>
                       </div>
                       <div>
                         <span className="bank-lbl">IFSC Code:</span>
-                        <strong className="mono">SBIN0001234</strong>
+                        <strong className="mono">{settings.ifsc_code || 'SBIN0001234'}</strong>
                       </div>
                       <div>
                         <span className="bank-lbl">Branch:</span>
-                        <strong>Main Branch, Bengaluru</strong>
+                        <strong>{settings.branch || 'Main Branch, Bengaluru'}</strong>
                       </div>
                     </div>
                   </div>

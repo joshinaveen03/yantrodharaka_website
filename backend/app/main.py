@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from app.core.config import get_settings
 from app.db_init import init_db
-from app.api import auth, notifications, courses, materials, events, contact, payments
+from app.api import auth, notifications, courses, materials, events, contact, payments, gallery
 
 settings = get_settings()
 
@@ -52,6 +52,7 @@ app.include_router(materials.router)
 app.include_router(events.router)
 app.include_router(contact.router)
 app.include_router(payments.router)
+app.include_router(gallery.router)
 
 
 # ── File download endpoint (local storage only) ────────────────────────────────
@@ -66,7 +67,7 @@ if settings.STORAGE_BACKEND == "local":
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.models.models import Notification, Course, StudyMaterial, Event, ContactEnquiry, Payment
+from app.models.models import Notification, Course, StudyMaterial, Event, ContactEnquiry, Payment, GalleryItem
 from app.utils.dependencies import get_current_admin
 
 
@@ -85,6 +86,7 @@ def admin_stats(
         "enquiries": db.query(ContactEnquiry).count(),
         "unread_enquiries": db.query(ContactEnquiry).filter(ContactEnquiry.is_read == False).count(),
         "payments": db.query(Payment).count(),
+        "gallery": db.query(GalleryItem).count(),
         "total_revenue": total_rev,
     }
 

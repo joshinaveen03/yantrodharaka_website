@@ -3,9 +3,17 @@ import {
   FaImages, FaTimes, FaChevronLeft, FaChevronRight,
   FaFilter, FaSearchPlus, FaCalendarAlt, FaTag
 } from 'react-icons/fa';
+import { galleryApi } from '../api/endpoints';
 import './Gallery.css';
 
-const GALLERY_ITEMS = [
+const CATEGORY_LABELS = {
+  workshops: 'Workshops & Events',
+  stem: 'AI & STEM Labs',
+  robotics: 'Robotics & Hardware',
+  academy: 'Academy & Heritage',
+};
+
+const DEFAULT_GALLERY_ITEMS = [
   {
     id: 'py-crash-course',
     title: 'Python Basic Crash Course 2026',
@@ -107,16 +115,42 @@ const CATEGORIES = [
 ];
 
 export default function Gallery() {
+  const [items, setItems] = useState([]);
   const [filter, setFilter] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = 'Photo Gallery – Yantrodharaka AI & STEM Academy';
+    galleryApi
+      .list()
+      .then(res => {
+        if (res.data && res.data.length > 0) {
+          const mapped = res.data.map(i => ({
+            id: i.id,
+            title: i.title,
+            category: i.category,
+            categoryLabel: CATEGORY_LABELS[i.category] || i.category,
+            date: i.date_label || '',
+            description: i.caption || '',
+            src: i.image_src,
+            badge: i.badge || '',
+          }));
+          setItems(mapped);
+        } else {
+          setItems(DEFAULT_GALLERY_ITEMS);
+        }
+      })
+      .catch(() => {
+        setItems(DEFAULT_GALLERY_ITEMS);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
+  const galleryList = items.length > 0 ? items : DEFAULT_GALLERY_ITEMS;
   const filteredItems = filter === 'all'
-    ? GALLERY_ITEMS
-    : GALLERY_ITEMS.filter(item => item.category === filter);
+    ? galleryList
+    : galleryList.filter(item => item.category === filter);
 
   const openLightbox = (index) => {
     setLightboxIndex(index);
@@ -137,6 +171,7 @@ export default function Gallery() {
   };
 
   const activeItem = lightboxIndex !== null ? filteredItems[lightboxIndex] : null;
+
 
   return (
     <div className="page-wrapper gallery-page">

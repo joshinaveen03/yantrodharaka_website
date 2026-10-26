@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaCheckCircle,
-  FaInstagram, FaYoutube, FaLinkedinIn
+  FaInstagram, FaYoutube, FaLinkedinIn, FaWhatsapp, FaClock
 } from 'react-icons/fa';
 import { contactApi } from '../api/endpoints';
 
@@ -13,9 +13,29 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [contactInfo, setContactInfo] = useState({
+    primary_phone: '+91 94832 08991',
+    secondary_phone: '',
+    whatsapp_number: '+91 94832 08991',
+    email: 'robo.yantrodharaka2026@gmail.com',
+    secondary_email: '',
+    address: 'Yantrodharaka Online Coaching Center & STEM Labs',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    pincode: '560001',
+    working_hours: 'Mon – Sat: 9:00 AM – 7:00 PM | Sun: 10:00 AM – 4:00 PM',
+    instagram_url: 'https://www.instagram.com/robo.yantrodharaka2026?rpxt=cWlqeTU0b3ZwcHky',
+    youtube_url: 'https://www.youtube.com/@robo.yantrodharaka2026',
+    linkedin_url: 'https://www.linkedin.com/in/robo-yantrodharaka-8166a33ab/',
+  });
 
   useEffect(() => {
     document.title = 'Contact Us – Yantrodharaka AI & STEM Coaching';
+    contactApi.getSettings()
+      .then(res => {
+        if (res.data) setContactInfo(prev => ({ ...prev, ...res.data }));
+      })
+      .catch(() => {});
   }, []);
 
   const validate = () => {
@@ -70,120 +90,189 @@ export default function Contact() {
             </p>
 
             <div className="contact-info-items">
-              {[
-                {
-                  icon: FaPhone,
-                  label: 'Phone',
-                  value: '+91 94832 08991',
-                  href: 'tel:+919483208991'
-                },
-                {
-                  icon: FaEnvelope,
-                  label: 'Email',
-                  value: 'robo.yantrodharaka2026@gmail.com',
-                  href: 'mailto:robo.yantrodharaka2026@gmail.com'
-                },
-                {
-                  icon: FaMapMarkerAlt,
-                  label: 'Address',
-                  value: 'Yantrodharaka AI & STEM Coaching'
-                },
-              ].map(({ icon: Icon, label, value, href }) => (
-                <div key={label} className="contact-info-item">
-                  <div className="contact-info-icon"><Icon /></div>
+              {/* Phone */}
+              <div className="contact-info-item">
+                <div className="contact-info-icon"><FaPhone /></div>
+                <div>
+                  <span className="contact-info-label">Phone &amp; Helpline</span>
+                  <a
+                    href={`tel:${(contactInfo.primary_phone || '+91 94832 08991').replace(/\s+/g, '')}`}
+                    className="contact-info-value"
+                    style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}
+                  >
+                    {contactInfo.primary_phone || '+91 94832 08991'}
+                  </a>
+                  {contactInfo.secondary_phone && (
+                    <a
+                      href={`tel:${contactInfo.secondary_phone.replace(/\s+/g, '')}`}
+                      style={{ color: 'var(--gray-500)', fontSize: '0.85rem', display: 'block', textDecoration: 'none' }}
+                    >
+                      Alt: {contactInfo.secondary_phone}
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* WhatsApp */}
+              {contactInfo.whatsapp_number && (
+                <div className="contact-info-item">
+                  <div className="contact-info-icon" style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981' }}>
+                    <FaWhatsapp />
+                  </div>
                   <div>
-                    <span className="contact-info-label">{label}</span>
-                    {href ? (
-                      <a href={href} className="contact-info-value" style={{ color: 'inherit', textDecoration: 'none' }}>
-                        {value}
-                      </a>
-                    ) : (
-                      <span className="contact-info-value">{value}</span>
-                    )}
+                    <span className="contact-info-label">WhatsApp Admissions</span>
+                    <a
+                      href={`https://wa.me/${contactInfo.whatsapp_number.replace(/[^0-9]/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="contact-info-value"
+                      style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}
+                    >
+                      {contactInfo.whatsapp_number}
+                    </a>
                   </div>
                 </div>
-              ))}
+              )}
+
+              {/* Email */}
+              <div className="contact-info-item">
+                <div className="contact-info-icon"><FaEnvelope /></div>
+                <div>
+                  <span className="contact-info-label">Official Email</span>
+                  <a
+                    href={`mailto:${contactInfo.email || 'robo.yantrodharaka2026@gmail.com'}`}
+                    className="contact-info-value"
+                    style={{ color: 'inherit', textDecoration: 'none', display: 'block', wordBreak: 'break-all' }}
+                  >
+                    {contactInfo.email || 'robo.yantrodharaka2026@gmail.com'}
+                  </a>
+                  {contactInfo.secondary_email && (
+                    <a
+                      href={`mailto:${contactInfo.secondary_email}`}
+                      style={{ color: 'var(--gray-500)', fontSize: '0.85rem', display: 'block', textDecoration: 'none', wordBreak: 'break-all' }}
+                    >
+                      Alt: {contactInfo.secondary_email}
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="contact-info-item">
+                <div className="contact-info-icon"><FaMapMarkerAlt /></div>
+                <div>
+                  <span className="contact-info-label">Center Address</span>
+                  <span className="contact-info-value" style={{ display: 'block', lineHeight: 1.45 }}>
+                    {[
+                      contactInfo.address,
+                      contactInfo.city,
+                      contactInfo.state ? `${contactInfo.state}${contactInfo.pincode ? ' – ' + contactInfo.pincode : ''}` : contactInfo.pincode
+                    ].filter(Boolean).join(', ') || 'Yantrodharaka Online Coaching Center & STEM Labs'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Working Hours */}
+              {contactInfo.working_hours && (
+                <div className="contact-info-item">
+                  <div className="contact-info-icon"><FaClock /></div>
+                  <div>
+                    <span className="contact-info-label">Operating Hours</span>
+                    <span className="contact-info-value" style={{ fontSize: '0.9rem' }}>
+                      {contactInfo.working_hours}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Social Channels */}
-            <div className="contact-social-section" style={{ marginTop: '2.5rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--navy)', marginBottom: '1rem' }}>
-                Follow &amp; Connect With Us
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <a
-                  href="https://www.instagram.com/robo.yantrodharaka2026?rpxt=cWlqeTU0b3ZwcHky"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-social-pill"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: '0.65rem 1rem',
-                    borderRadius: 'var(--radius-md)',
-                    background: 'var(--white)',
-                    border: '1px solid var(--gray-200)',
-                    color: 'var(--gray-700)',
-                    textDecoration: 'none',
-                    fontWeight: '600',
-                    fontSize: '0.88rem',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}
-                >
-                  <FaInstagram style={{ color: '#E1306C', fontSize: '1.25rem' }} />
-                  <span>@robo.yantrodharaka2026</span>
-                </a>
+            {(contactInfo.instagram_url || contactInfo.youtube_url || contactInfo.linkedin_url) && (
+              <div className="contact-social-section" style={{ marginTop: '2.5rem' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--navy)', marginBottom: '1rem' }}>
+                  Follow &amp; Connect With Us
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {contactInfo.instagram_url && (
+                    <a
+                      href={contactInfo.instagram_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="contact-social-pill"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        padding: '0.65rem 1rem',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--white)',
+                        border: '1px solid var(--gray-200)',
+                        color: 'var(--gray-700)',
+                        textDecoration: 'none',
+                        fontWeight: '600',
+                        fontSize: '0.88rem',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      <FaInstagram style={{ color: '#E1306C', fontSize: '1.25rem' }} />
+                      <span>Follow on Instagram</span>
+                    </a>
+                  )}
 
-                <a
-                  href="https://www.youtube.com/@robo.yantrodharaka2026"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-social-pill"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: '0.65rem 1rem',
-                    borderRadius: 'var(--radius-md)',
-                    background: 'var(--white)',
-                    border: '1px solid var(--gray-200)',
-                    color: 'var(--gray-700)',
-                    textDecoration: 'none',
-                    fontWeight: '600',
-                    fontSize: '0.88rem',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}
-                >
-                  <FaYoutube style={{ color: '#FF0000', fontSize: '1.25rem' }} />
-                  <span>YouTube: @robo.yantrodharaka2026</span>
-                </a>
+                  {contactInfo.youtube_url && (
+                    <a
+                      href={contactInfo.youtube_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="contact-social-pill"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        padding: '0.65rem 1rem',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--white)',
+                        border: '1px solid var(--gray-200)',
+                        color: 'var(--gray-700)',
+                        textDecoration: 'none',
+                        fontWeight: '600',
+                        fontSize: '0.88rem',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      <FaYoutube style={{ color: '#FF0000', fontSize: '1.25rem' }} />
+                      <span>Watch on YouTube</span>
+                    </a>
+                  )}
 
-                <a
-                  href="https://www.linkedin.com/in/robo-yantrodharaka-8166a33ab/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-social-pill"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: '0.65rem 1rem',
-                    borderRadius: 'var(--radius-md)',
-                    background: 'var(--white)',
-                    border: '1px solid var(--gray-200)',
-                    color: 'var(--gray-700)',
-                    textDecoration: 'none',
-                    fontWeight: '600',
-                    fontSize: '0.88rem',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}
-                >
-                  <FaLinkedinIn style={{ color: '#0A66C2', fontSize: '1.25rem' }} />
-                  <span>LinkedIn: Robo Yantrodharaka</span>
-                </a>
+                  {contactInfo.linkedin_url && (
+                    <a
+                      href={contactInfo.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="contact-social-pill"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        padding: '0.65rem 1rem',
+                        borderRadius: 'var(--radius-md)',
+                        background: 'var(--white)',
+                        border: '1px solid var(--gray-200)',
+                        color: 'var(--gray-700)',
+                        textDecoration: 'none',
+                        fontWeight: '600',
+                        fontSize: '0.88rem',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      <FaLinkedinIn style={{ color: '#0A66C2', fontSize: '1.25rem' }} />
+                      <span>Connect on LinkedIn</span>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Form */}

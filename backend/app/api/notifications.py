@@ -78,6 +78,16 @@ async def create_notification(
     description: Optional[str] = Form(None),
     publication_date: Optional[str] = Form(None),
     is_published: bool = Form(False),
+    dates: Optional[str] = Form("15 & 16 August 2026"),
+    dates_sub: Optional[str] = Form("Saturday & Sunday"),
+    timing: Optional[str] = Form("5:00 PM – 7:00 PM IST"),
+    timing_sub: Optional[str] = Form("Live Interactive Sessions"),
+    platform: Optional[str] = Form("Microsoft Teams"),
+    platform_sub: Optional[str] = Form("Online Hands-on Classroom"),
+    fee: Optional[str] = Form("₹49 Only"),
+    perks: Optional[str] = Form("Certificate & Code Files"),
+    payment_url: Optional[str] = Form("/payment?course=python-crash"),
+    form_url: Optional[str] = Form("https://forms.gle/TAYVJrSX7DAbpuFN8"),
     attachment: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     _=Depends(get_current_admin),
@@ -101,6 +111,16 @@ async def create_notification(
         description=description,
         publication_date=pub_date,
         is_published=is_published,
+        dates=dates.strip() if dates else "15 & 16 August 2026",
+        dates_sub=dates_sub.strip() if dates_sub else "Saturday & Sunday",
+        timing=timing.strip() if timing else "5:00 PM – 7:00 PM IST",
+        timing_sub=timing_sub.strip() if timing_sub else "Live Interactive Sessions",
+        platform=platform.strip() if platform else "Microsoft Teams",
+        platform_sub=platform_sub.strip() if platform_sub else "Online Hands-on Classroom",
+        fee=fee.strip() if fee else "₹49 Only",
+        perks=perks.strip() if perks else "Certificate & Code Files",
+        payment_url=payment_url.strip() if payment_url else "/payment?course=python-crash",
+        form_url=form_url.strip() if form_url else "https://forms.gle/TAYVJrSX7DAbpuFN8",
         attachment_filename=stored_name,
         attachment_original_name=orig_name,
         attachment_size=size,
@@ -119,6 +139,16 @@ async def update_notification(
     description: Optional[str] = Form(None),
     publication_date: Optional[str] = Form(None),
     is_published: Optional[bool] = Form(None),
+    dates: Optional[str] = Form(None),
+    dates_sub: Optional[str] = Form(None),
+    timing: Optional[str] = Form(None),
+    timing_sub: Optional[str] = Form(None),
+    platform: Optional[str] = Form(None),
+    platform_sub: Optional[str] = Form(None),
+    fee: Optional[str] = Form(None),
+    perks: Optional[str] = Form(None),
+    payment_url: Optional[str] = Form(None),
+    form_url: Optional[str] = Form(None),
     attachment: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     _=Depends(get_current_admin),
@@ -133,6 +163,27 @@ async def update_notification(
         n.description = description
     if is_published is not None:
         n.is_published = is_published
+    if dates is not None:
+        n.dates = dates.strip()
+    if dates_sub is not None:
+        n.dates_sub = dates_sub.strip()
+    if timing is not None:
+        n.timing = timing.strip()
+    if timing_sub is not None:
+        n.timing_sub = timing_sub.strip()
+    if platform is not None:
+        n.platform = platform.strip()
+    if platform_sub is not None:
+        n.platform_sub = platform_sub.strip()
+    if fee is not None:
+        n.fee = fee.strip()
+    if perks is not None:
+        n.perks = perks.strip()
+    if payment_url is not None:
+        n.payment_url = payment_url.strip()
+    if form_url is not None:
+        n.form_url = form_url.strip()
+
     if publication_date is not None:
         try:
             n.publication_date = datetime.fromisoformat(publication_date)

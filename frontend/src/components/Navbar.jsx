@@ -8,7 +8,7 @@ const links = [
   { to: '/',             label: 'Home' },
   { to: '/notifications',label: 'Notifications' },
   { to: '/courses',      label: 'Courses' },
-  { to: '/materials',    label: 'Study Materials' },
+  { to: '/materials',    label: 'Materials' },
   { to: '/events',       label: 'Events' },
   { to: '/gallery',      label: 'Gallery' },
   { to: '/about',        label: 'About Us' },
@@ -27,37 +27,53 @@ export default function Navbar() {
 
   return (
     <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="container navbar-inner">
+      <div className="navbar-container">
         <Link to="/" className="navbar-brand">
           <div className="brand-logo-wrap">
             <img src={logoImg} alt="Yantrodharaka Logo" className="brand-logo-img" />
             <div className="brand-logo-glow" />
           </div>
           <div className="brand-text">
-            <span className="brand-main">Yantrodharaka</span>
-            <span className="brand-sub">AI &bull; STEM &bull; Innovation</span>
+            <div className="brand-title-row">
+              <span className="brand-main">YANTRODHARAKA</span>
+              <span className="brand-badge">Online Coaching Center</span>
+            </div>
+            <span className="brand-tagline">Build Skills | Create Innovation | Shape The Future</span>
           </div>
         </Link>
 
-        <nav className={`navbar-links ${open ? 'open' : ''}`}>
-          {links.map(l => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.to === '/'}
-              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        <div className={`navbar-right ${open ? 'open' : ''}`}>
+          <nav className="navbar-nav-links">
+            {links.map(l => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.to === '/'}
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="navbar-actions-row">
+            <Link
+              to="/payment"
+              className="btn btn-primary btn-sm nav-pay-btn"
               onClick={() => setOpen(false)}
             >
-              {l.label}
-            </NavLink>
-          ))}
-          <Link to="/payment" className="btn btn-outline-saffron btn-sm nav-pay-btn" onClick={() => setOpen(false)} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            Pay Online
-          </Link>
-          <Link to="/admin" className="btn btn-primary btn-sm nav-admin-btn" onClick={() => setOpen(false)}>
-            Admin
-          </Link>
-        </nav>
+              Pay Online
+            </Link>
+            <Link
+              to="/admin"
+              className="btn btn-outline-saffron btn-sm nav-admin-btn"
+              onClick={() => setOpen(false)}
+            >
+              Admin
+            </Link>
+          </div>
+        </div>
 
         <button
           className="nav-toggle"
