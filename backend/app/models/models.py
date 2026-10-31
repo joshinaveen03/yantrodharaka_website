@@ -63,10 +63,30 @@ class Course(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class MaterialFolder(Base):
+    __tablename__ = "material_folders"
+
+    id = Column(String(36), primary_key=True, default=gen_uuid)
+    name = Column(String(300), nullable=False)
+    description = Column(Text, nullable=True)
+    subject = Column(String(300), nullable=True)
+    course = Column(String(300), nullable=True)
+    is_protected = Column(Boolean, default=True)  # Requires password/permission to open
+    access_password = Column(String(200), nullable=True)  # Admin-set password
+    is_published = Column(Boolean, default=True, index=True)
+    display_order = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    materials = relationship("StudyMaterial", back_populates="folder", cascade="all, delete-orphan")
+    access_requests = relationship("MaterialAccessRequest", back_populates="folder", cascade="all, delete-orphan")
+
+
 class StudyMaterial(Base):
     __tablename__ = "study_materials"
 
     id = Column(String(36), primary_key=True, default=gen_uuid)
+    folder_id = Column(String(36), ForeignKey("material_folders.id", ondelete="SET NULL"), nullable=True)
     title = Column(String(500), nullable=False)
     description = Column(Text, nullable=True)
     subject = Column(String(300), nullable=True)
@@ -78,6 +98,26 @@ class StudyMaterial(Base):
     is_published = Column(Boolean, default=False, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    folder = relationship("MaterialFolder", back_populates="materials")
+
+
+class MaterialAccessRequest(Base):
+    __tablename__ = "material_access_requests"
+
+    id = Column(String(36), primary_key=True, default=gen_uuid)
+    folder_id = Column(String(36), ForeignKey("material_folders.id", ondelete="CASCADE"), nullable=False)
+    folder_name = Column(String(300), nullable=False)
+    student_name = Column(String(300), nullable=False)
+    email = Column(String(300), nullable=False)
+    phone = Column(String(50), nullable=False)
+    message = Column(Text, nullable=True)
+    status = Column(String(50), default="PENDING")  # PENDING, APPROVED, REJECTED
+    admin_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    folder = relationship("MaterialFolder", back_populates="access_requests")
 
 
 class Event(Base):

@@ -75,3 +75,64 @@
 @media (max-width: 580px) {
   .admin-stats-grid { grid-template-columns: 1fr; }
 }
+
+/* Admin Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--gray-200);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.admin-tab-btn {
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  background: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+.admin-tab-btn:hover {
+  color: var(--navy);
+}
+.admin-tab-btn.active {
+  color: var(--navy);
+  border-bottom-color: var(--saffron);
+}
+.admin-tab-badge {
+  background: var(--gray-200);
+  color: var(--gray-700);
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+.admin-tab-btn.active .admin-tab-badge {
+  background: var(--navy);
+  color: var(--white);
+}
+.admin-tab-badge.badge-pending {
+  background: #EF4444;
+  color: #fff;
+}
+.pwd-badge {
+  font-family: monospace;
+  background: #FEF3C7;
+  color: #92400E;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid #FDE68A;
+}
+

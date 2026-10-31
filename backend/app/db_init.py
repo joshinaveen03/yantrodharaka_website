@@ -3,11 +3,15 @@ Database initialization:
 - Creates all tables (if they don't exist)
 - Seeds the initial admin user from environment variables
 """
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from app.core.database import engine, SessionLocal
 from app.core.security import hash_password
 from app.core.config import get_settings
-from app.models.models import Base, AdminUser, GalleryItem, Notification, PaymentPackage, PaymentSetting, ContactSetting
+from app.models.models import (
+    Base, AdminUser, GalleryItem, Notification, PaymentPackage,
+    PaymentSetting, ContactSetting, MaterialFolder, StudyMaterial, MaterialAccessRequest
+)
 from datetime import datetime
 
 settings = get_settings()
@@ -247,6 +251,62 @@ def init_db() -> None:
             db.add(cset)
             db.commit()
             print("[init_db] Seeded initial contact settings.")
+
+        # Ensure folder_id column exists on study_materials
+        try:
+            with engine.connect() as conn:
+                result = conn.execute(text("PRAGMA table_info(study_materials)"))
+                columns = [row[1] for row in result.fetchall()]
+                if columns and "folder_id" not in columns:
+                    conn.execute(text("ALTER TABLE study_materials ADD COLUMN folder_id VARCHAR(36) REFERENCES material_folders(id)"))
+                    conn.commit()
+                    print("[init_db] Added folder_id column to study_materials.")
+        except Exception as e:
+            print(f"[init_db] Note on column check: {e}")
+
+        # Seed material folders if none exist
+        if db.query(MaterialFolder).count() == 0:
+            folder1 = MaterialFolder(
+                name="Python Crash Course 2026 Materials",
+                subject="Python Programming",
+                course="Python Basic Crash Course",
+                description="Official code files, practice notebooks, and lecture notes for the weekend live workshop.",
+                is_protected=True,
+                access_password="PYTHON@2026",
+                is_published=True,
+                display_order=1,
+            )
+            folder2 = MaterialFolder(
+                name="Robotics & STEM Tinkering Guides",
+                subject="Robotics & Electronics",
+                course="Robotics & STEM Weekend Program",
+                description="Sensor interfacing schematics, motor driver guides, and component datasheets.",
+                is_protected=True,
+                access_password="ROBO@2026",
+                is_published=True,
+                display_order=2,
+            )
+            folder3 = MaterialFolder(
+                name="Open Learning & Foundation Notes",
+                subject="General STEM & Logic",
+                course="Foundation Batches",
+                description="Free public study sheets, syllabus blueprints, and introductory exercises.",
+                is_protected=False,
+                access_password=None,
+                is_published=True,
+                display_order=3,
+            )
+            db.add_all([folder1, folder2, folder3])
+            db.commit()
+            print("[init_db] Seeded initial material folders.")
+
+            # Assign any existing unassigned materials to folder1
+            unassigned = db.query(StudyMaterial).filter(StudyMaterial.folder_id == None).all()
+            for m in unassigned:
+                m.folder_id = folder1.id
+            if unassigned:
+                db.commit()
+                print(f"[init_db] Linked {len(unassigned)} existing materials to folder: {folder1.name}")
     finally:
         db.close()
 

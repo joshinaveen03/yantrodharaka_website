@@ -26,9 +26,37 @@ export const coursesApi = {
 };
 
 export const materialsApi = {
-  list: (page = 1, subject = '', course = '') =>
-    api.get(`/api/materials?page=${page}&page_size=12&subject=${subject}&course=${course}`),
-  adminList: (page = 1) => api.get(`/api/materials/admin/all?page=${page}&page_size=20`),
+  list: (page = 1, subject = '', course = '', folderId = '') =>
+    api.get(`/api/materials?page=${page}&page_size=12&subject=${subject}&course=${course}${folderId ? `&folder_id=${folderId}` : ''}`),
+  listFolders: (subject = '', course = '') =>
+    api.get(`/api/materials/folders${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`),
+  unlockFolder: (folderId, password) =>
+    api.post(`/api/materials/folders/${folderId}/unlock`, { password }),
+  getFolderItems: (folderId, token = '') =>
+    api.get(`/api/materials/folders/${folderId}/items${token ? `?token=${encodeURIComponent(token)}` : ''}`, {
+      headers: token ? { 'X-Folder-Token': token } : {}
+    }),
+  requestAccess: (data) =>
+    api.post('/api/materials/access-request', data),
+
+  // Admin APIs
+  adminList: (page = 1, folderId = '') =>
+    api.get(`/api/materials/admin/all?page=${page}&page_size=30${folderId ? `&folder_id=${folderId}` : ''}`),
+  adminFolders: () =>
+    api.get('/api/materials/admin/folders'),
+  adminCreateFolder: (data) =>
+    api.post('/api/materials/admin/folders', data),
+  adminUpdateFolder: (id, data) =>
+    api.put(`/api/materials/admin/folders/${id}`, data),
+  adminDeleteFolder: (id) =>
+    api.delete(`/api/materials/admin/folders/${id}`),
+  adminAccessRequests: (page = 1) =>
+    api.get(`/api/materials/admin/access-requests?page=${page}&page_size=50`),
+  adminUpdateAccessRequest: (id, data) =>
+    api.put(`/api/materials/admin/access-requests/${id}`, data),
+  adminDeleteAccessRequest: (id) =>
+    api.delete(`/api/materials/admin/access-requests/${id}`),
+
   upload: (formData) => api.post('/api/materials', formData),
   update: (id, formData) => api.put(`/api/materials/${id}`, formData),
   delete: (id) => api.delete(`/api/materials/${id}`),

@@ -107,17 +107,101 @@ class CourseOut(CourseBase):
         from_attributes = True
 
 
+# ── Material Folders & Access ──────────────────────────────────────────────────
+class MaterialFolderBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    subject: Optional[str] = None
+    course: Optional[str] = None
+    is_protected: bool = True
+    is_published: bool = True
+    display_order: int = 0
+
+
+class MaterialFolderCreate(MaterialFolderBase):
+    access_password: Optional[str] = None
+
+
+class MaterialFolderUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    subject: Optional[str] = None
+    course: Optional[str] = None
+    is_protected: Optional[bool] = None
+    access_password: Optional[str] = None
+    is_published: Optional[bool] = None
+    display_order: Optional[int] = None
+
+
+class MaterialFolderOut(MaterialFolderBase):
+    id: str
+    items_count: int = 0
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class MaterialFolderAdminOut(MaterialFolderOut):
+    access_password: Optional[str] = None
+
+
+class FolderUnlockRequest(BaseModel):
+    password: str
+
+
+class FolderUnlockResponse(BaseModel):
+    success: bool
+    folder_id: str
+    token: str
+    message: str
+
+
+class MaterialAccessRequestCreate(BaseModel):
+    folder_id: str
+    student_name: str
+    email: EmailStr
+    phone: str
+    message: Optional[str] = None
+
+
+class MaterialAccessRequestUpdate(BaseModel):
+    status: Optional[str] = None
+    admin_notes: Optional[str] = None
+
+
+class MaterialAccessRequestOut(BaseModel):
+    id: str
+    folder_id: str
+    folder_name: str
+    student_name: str
+    email: str
+    phone: str
+    message: Optional[str] = None
+    status: str
+    admin_notes: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 # ── Study Materials ───────────────────────────────────────────────────────────
 class StudyMaterialBase(BaseModel):
     title: str
     description: Optional[str] = None
     subject: Optional[str] = None
     course: Optional[str] = None
+    folder_id: Optional[str] = None
     is_published: bool = False
 
 
 class StudyMaterialOut(StudyMaterialBase):
     id: str
+    folder_id: Optional[str] = None
+    folder_name: Optional[str] = None
     filename: str
     original_filename: str
     file_size: Optional[int] = None
@@ -127,6 +211,7 @@ class StudyMaterialOut(StudyMaterialBase):
 
     class Config:
         from_attributes = True
+
 
 
 # ── Events ────────────────────────────────────────────────────────────────────
